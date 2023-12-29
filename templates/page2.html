@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree Game</title>
+  <style>
+        .game-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        #family-tree {
+            flex-grow: 1;
+            width: 960px; /* Update based on your tree image's actual dimensions */
+            height: 860px;
+            position: relative;
+            background-image: url('../static/tree.jpg'); /* Update with the correct image path */
+            background-size: cover;
+        }
+        .draggables-container {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            padding: 10px;
+            height: 860px; /* Should match #family-tree height */
+        }
+        .dropzone {
+            width: 140px; /* Update based on placeholder size */
+            height: 140px;
+            position: absolute;
+            border: 2px dashed #ccc;
+            border-radius: 100%; /* Circular drop zones */
+        }
+        /* Positions for dropzones based on your image */
+        #dropzone-grandparent1 { top: 110px; left: 300px; }
+        #dropzone-grandparent2 { top: 110px; left: 520px; }
+        #dropzone-parent1 { top: 270px; left: 100px; }
+        #dropzone-parent2 { top: 320px; left: 280px; }
+        #dropzone-kid { bottom: 260px; left: 100px; }
+
+        .draggable {
+            width: 90px; /* Slightly smaller than dropzone for visual effect */
+            height: 90px;
+            cursor: pointer;
+            margin: 5px; /* Space between photos */
+        }
+
+
+    </style>
+</head>
+<body>
+
+
+    <div class="game-container">
+        <div id="family-tree">
+            <!-- Drop zones positioned over the tree background -->
+            <div class="dropzone" id="dropzone-grandparent1"></div>
+            <div class="dropzone" id="dropzone-grandparent2"></div>
+            <div class="dropzone" id="dropzone-parent1"></div>
+            <div class="dropzone" id="dropzone-parent2"></div>
+            <div class="dropzone" id="dropzone-kid"></div>
+<!--            -->
+
+        </div>
+
+        <div class="draggables-container">
+            <!-- Draggable elements -->
+            <img src="https://img.freepik.com/free-vector/hand-drawn-grandpa-illustration_23-2147657684.jpg?w=740&t=st=1703836620~exp=1703837220~hmac=423a0bbb977f52e20f1f2309f2da86e4ab275790473fa01bf1f4749f4480bc5d" class="draggable" id="draggable-grandparent1" draggable="true">
+            <img src="https://www.shutterstock.com/image-vector/cute-grandmother-head-avatar-character-260nw-648981169.jpg" class="draggable" id="draggable-grandparent2" draggable="true">
+            <img src="https://cdn.vectorstock.com/i/1000x1000/76/80/cartoon-dad-vector-10157680.webp" class="draggable" id="draggable-parent1" draggable="true">
+            <img src="https://cdn.vectorstock.com/i/1000x1000/56/57/beautiful-mother-avatar-character-vector-14535657.webp" class="draggable" id="draggable-parent2" draggable="true">
+            <img src="https://cdn.vectorstock.com/i/1000x1000/39/04/super-kid-vector-1693904.webp" class="draggable" id="draggable-kid" draggable="true">
+        </div>
+    </div>
+    <!-- Add more draggables as needed -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var draggables = document.querySelectorAll('.draggable');
+            var dropzones = document.querySelectorAll('.dropzone');
+
+            draggables.forEach(function(draggable) {
+                draggable.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text', e.target.id);
+                });
+            });
+
+            dropzones.forEach(function(zone) {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault(); // Allows us to drop
+                    this.style.border = '2px solid green'; // Visual feedback
+                });
+
+                zone.addEventListener('dragleave', function(e) {
+                    this.style.border = '2px dashed #ccc'; // Reset visual feedback
+                });
+
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    var draggableId = e.dataTransfer.getData('text');
+                    var draggableElement = document.getElementById(draggableId);
+                    if (draggableElement && checkIfCorrect(draggableId, this.id)) {
+                        this.appendChild(draggableElement);
+                        draggableElement.style.position = 'absolute';
+                        draggableElement.style.left = '5px'; // Center the image in the dropzone
+                        draggableElement.style.top = '5px';
+                        playSound('../static/clap.wav'); // Path to your correct sound
+                    } else {
+                        playSound('../static/lose.wav'); // Path to your incorrect sound
+                    }
+                    this.style.border = '2px dashed #ccc'; // Reset visual feedback
+                });
+            });
+        });
+
+        function checkIfCorrect(draggableId, dropzoneId) {
+            // Replace with your actual logic to determine correctness
+            return draggableId.replace('draggable-', '') === dropzoneId.replace('dropzone-', '');
+        }
+
+        function playSound(soundFile) {
+            var audio = new Audio(soundFile);
+            audio.play();
+        }
+    </script>
+
+</body>
+</html>
