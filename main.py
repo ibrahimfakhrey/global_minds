@@ -56,7 +56,7 @@ def start():
     return render_template("index.html")
 @app.route("/dash")
 def dash():
-    return render_template("dash.html")
+    return render_template("profile.html",now=datetime.now())
 @app.route("/book")
 def book():
     return render_template("book.html")
