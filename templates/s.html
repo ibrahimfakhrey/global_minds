@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Family Presentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h1 {
+            color: navy;
+        }
+
+        em {
+            color: tomato;
+        }
+
+        #presentation {
+            display: none;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Family Presentation</h1>
+    <img src="https://thumbs.dreamstime.com/z/complete-cartoon-family-care-parents-children-illustration-54300046.jpg" alt="">
+    <form id="familyForm">
+        <input type="text" id="name" placeholder="Your Name" required><br><br>
+        <input type="number" id="number" placeholder="Number of Family Members" required><br><br>
+        <input type="text" id="membersNames" placeholder="Family Members' Names" required><br><br>
+        <input type="text" id="location" placeholder="Your Location" required><br><br>
+        <input type="text" id="activity" placeholder="Activity or Hobby" required><br><br>
+        <input type="text" id="closingRemark" placeholder="Closing Remark (e.g., I love my family)" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="presentation">
+        <p>Hi, my name is <strong id="displayName"></strong>, and I would like to tell you a few things about my family.</p>
+        <p>First, there are <em id="displayNumber"></em> people in my family. Their names are <em id="displayMembersNames"></em>.</p>
+        <p>Second, we live in <em id="displayLocation"></em>.</p>
+        <p>Third, we like to <em id="displayActivity"></em>.</p>
+        <p>All in all, <em id="displayClosingRemark"></em>.</p>
+    </div>
+
+    <script>
+        document.getElementById('familyForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Retrieve the values from the form
+            var name = document.getElementById('name').value;
+            var number = document.getElementById('number').value;
+            var membersNames = document.getElementById('membersNames').value;
+            var location = document.getElementById('location').value;
+            var activity = document.getElementById('activity').value;
+            var closingRemark = document.getElementById('closingRemark').value;
+
+            // Update the presentation section with the user's input
+            document.getElementById('displayName').innerText = name;
+            document.getElementById('displayNumber').innerText = number;
+            document.getElementById('displayMembersNames').innerText = membersNames;
+            document.getElementById('displayLocation').innerText = location;
+            document.getElementById('displayActivity').innerText = activity;
+            document.getElementById('displayClosingRemark').innerText = closingRemark;
+
+            // Show the presentation section
+            document.getElementById('presentation').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
